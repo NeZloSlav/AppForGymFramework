@@ -1,9 +1,11 @@
 ﻿using AppForGym.Classes;
 using AppForGym.ClassHelper;
 using AppForGym.Database;
+using AppForGym.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,7 +25,7 @@ namespace AppForGym.Pages
     /// </summary>
     public partial class EditOrDeleteClientPage : Page
     {
-        private User currentUser;
+        private Client currentClient;
         private bool IsEdit;
 
         public EditOrDeleteClientPage()
@@ -31,19 +33,19 @@ namespace AppForGym.Pages
             InitializeComponent();
         }
 
-        public EditOrDeleteClientPage(User user)
+        public EditOrDeleteClientPage(Client client)
         {
             InitializeComponent();
 
-            CmbTariff.ItemsSource = User.Tariffs;
+            CmbTariff.ItemsSource = DBClass.tariffList;
 
-            currentUser = user;
+            currentClient = client;
 
-            TbxSurname.Text = currentUser.Surname;
-            TbxName.Text = currentUser.Name;
-            TbxPatronymic.Text = currentUser.Patronymic;
-            DtPickerLastPay.Text = currentUser.LastPayment.ToString();
-            CmbTariff.SelectedIndex = currentUser.TariffIndex;
+            TbxSurname.Text = currentClient.Surname;
+            TbxName.Text = currentClient.Name;
+            TbxPatronymic.Text = currentClient.Patronymic;
+            DtPickerLastPay.Text = currentClient.LastPaymentDate.ToString();
+            CmbTariff.SelectedIndex = currentClient.IDTariff;
         }
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
@@ -62,7 +64,8 @@ namespace AppForGym.Pages
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             DisenableForms();
-            UserDB.Update(currentUser.Id, TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex);
+            DBClass.SP_UpdateClient(currentClient.IDClient, TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex + 1);
+            //UserDB.Update(currentClient.IDClient, TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex);
             NavigateClass.frmNavigate.GoBack();
         }
 
@@ -84,7 +87,8 @@ namespace AppForGym.Pages
 
             if (answer == MessageBoxResult.Yes)
             {
-                UserDB.Delete(currentUser.Id);
+                DBClass.SP_DeleteClient(currentClient.IDClient);
+                //UserDB.Delete(currentClient.IDClient);
                 NavigateClass.frmNavigate.GoBack();
             }
 

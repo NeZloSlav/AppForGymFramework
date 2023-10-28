@@ -27,7 +27,7 @@ namespace AppForGym.Pages
         {
             InitializeComponent();
 
-            CmbTariff.ItemsSource = User.Tariffs;
+            CmbTariff.ItemsSource = DBClass.tariffList;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -43,7 +43,8 @@ namespace AppForGym.Pages
             }
             else
             {
-                UserDB.Add(TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex);
+                DBClass.SP_AddClient(TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex + 1);
+                //UserDB.Add(TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex);
                 MessageBox.Show("Данные о клиенте занесены в базу", "Успешно!");
                 ClearForms();
             }

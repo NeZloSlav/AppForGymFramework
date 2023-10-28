@@ -48,24 +48,24 @@ namespace AppForGym
 
         private void CheckConnString()
         {
-            string line = string.Empty;
+            //string line = string.Empty;
 
-            try
-            {
-                string pathToIcoFile = AppDomain.CurrentDomain.BaseDirectory + "AppForGym\\ClassHelper\\ConnStr.txt";
+            //try
+            //{
+            //    string pathToIcoFile = AppDomain.CurrentDomain.BaseDirectory + "AppForGym\\ClassHelper\\ConnStr.txt";
 
-                StreamReader reader = new StreamReader(pathToIcoFile);
+            //    StreamReader reader = new StreamReader(pathToIcoFile);
 
-                line = reader.ReadLine();
+            //    line = reader.ReadLine();
 
-                Database.DBClass.ConnectionString = line;
+            //    Database.DBClass.ConnectionString = line;
 
-                reader.Close();
-            }
-            catch (Exception e)
-            {
-                
-            }
+            //    reader.Close();
+            //}
+            //catch (Exception e)
+            //{
+            //    StreamWriter sw = new StreamWriter()
+            //}
         }
     }
 }

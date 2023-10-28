@@ -1,6 +1,7 @@
 ﻿using AppForGym.Classes;
 using AppForGym.ClassHelper;
 using AppForGym.Database;
+using AppForGym.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace AppForGym.Pages
 
         private void UpdateList()
         {
-            var currentList = UserDB.GetUsers();
+            var currentList = DBClass.SP_GetAllClients();
 
             if (cmbSearch.SelectedIndex == 0)
             {
@@ -60,16 +61,16 @@ namespace AppForGym.Pages
             }
             else
             {
-                currentList = currentList.Where(c => c.LastPayment.Date.ToString().ToLower().Contains(TbxSearch.Text.ToLower())).ToList();
+                currentList = currentList.Where(c => c.LastPaymentDate.Date.ToString().ToLower().Contains(TbxSearch.Text.ToLower())).ToList();
 
-                listViewUsers.ItemsSource = currentList.OrderBy(p => p.LastPayment).ToList();
+                listViewUsers.ItemsSource = currentList.OrderBy(p => p.LastPaymentDate).ToList();
             }
 
         }
 
         private void BtnEdit_Click(object sender, RoutedEventArgs e)
         {
-            var boundData = (User)((Button)sender).DataContext;
+            var boundData = (Client)((Button)sender).DataContext;
 
             EditOrDeleteClientPage editOrDeleteClientPage = new EditOrDeleteClientPage(boundData);
 
@@ -98,7 +99,7 @@ namespace AppForGym.Pages
 
         private void BtnMark_Click(object sender, RoutedEventArgs e)
         {
-            var boundData = (User)((Button)sender).DataContext;
+            var boundData = (Client)((Button)sender).DataContext;
 
             MarkClientPage markClientPage = new MarkClientPage(boundData);
 

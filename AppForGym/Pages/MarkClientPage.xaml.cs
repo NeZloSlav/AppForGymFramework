@@ -1,19 +1,11 @@
 ﻿using AppForGym.Classes;
 using AppForGym.ClassHelper;
+using AppForGym.Database;
+using AppForGym.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AppForGym.Pages
 {
@@ -22,20 +14,20 @@ namespace AppForGym.Pages
     /// </summary>
     public partial class MarkClientPage : Page
     {
-        private User currentUser;
+        private readonly Client currentClient;
 
         public MarkClientPage()
         {
             InitializeComponent();
         }
 
-        public MarkClientPage(User user)
+        public MarkClientPage(Client client)
         {
-            currentUser = user;
+            currentClient = client;
 
             InitializeComponent();
 
-            foreach (DateTime date in currentUser.MarkDates)
+            foreach (DateTime date in DBClass.SP_GetAllMarkDates(currentClient.IDClient))
             {
                 CldrMark.BlackoutDates.Add(new CalendarDateRange(date));
             }
@@ -45,7 +37,8 @@ namespace AppForGym.Pages
         {
             foreach (DateTime date in CldrMark.SelectedDates)
             {
-                currentUser.MarkDates.Add(date);
+                DBClass.SP_AddMarkDate(currentClient.IDClient, date);
+                //currentUser.MarkDates.Add(date);
             }
 
             MessageBox.Show("Выделенные даты занесены в базу.", "Успех!");
@@ -62,9 +55,10 @@ namespace AppForGym.Pages
         {
             foreach (var date in CldrMark.SelectedDates)
             {
-                if (currentUser.MarkDates.Contains(date))
+                if (DBClass.SP_GetAllMarkDates(currentClient.IDClient).Contains(date))
                 {
-                    currentUser.MarkDates.Remove(date);
+                    DBClass.SP_DeleteMarkDate(currentClient.IDClient, date);
+                    //currentUser.MarkDates.Remove(date);
                 }
             }
 
