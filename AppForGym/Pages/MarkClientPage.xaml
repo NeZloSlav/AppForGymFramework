@@ -20,6 +20,12 @@
 
         <Grid>
 
+            <Image Source="\Resources\Icon2.bmp"
+                   Width="50"
+                   Height="50"
+                   HorizontalAlignment="Left"
+                   Margin="30 0 0 0 "/>
+
             <!--Оглавление-->
             <TextBlock Text="Журнал посещаемости" 
                        HorizontalAlignment="Center" 

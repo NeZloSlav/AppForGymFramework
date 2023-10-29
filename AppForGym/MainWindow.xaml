@@ -12,10 +12,10 @@
         MinWidth="700"
         WindowStyle="SingleBorderWindow"
         WindowStartupLocation="CenterScreen"
-        MouseDown="Window_MouseDown">
+        MouseDown="Window_MouseDown"
+        Icon=".\Resources\BLOOMGYM2.jpg">
     
     <Grid>
         <Frame x:Name="FrmContent" NavigationUIVisibility="Hidden"/>
-
     </Grid>
 </Window>

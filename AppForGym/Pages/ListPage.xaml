@@ -117,6 +117,13 @@
         <!--Навигация-->
 
         <Grid Grid.Row="2">
+
+            <Image Source="\Resources\icon2.bmp"
+                   Width="70"
+                   Height="70"
+                   HorizontalAlignment="Left"
+                   Margin="50 0 0 0"/>
+
             <Button x:Name="BtnAddUser"
                     Content="Добавить клиента"
                     Style="{StaticResource btnDefaultStyle}"
