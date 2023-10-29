@@ -28,6 +28,7 @@ namespace AppForGym.Pages
             InitializeComponent();
 
             CmbTariff.ItemsSource = DBClass.tariffList;
+            DtPickerLastPay.SelectedDate = DateTime.Now;
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)

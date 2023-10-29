@@ -1,22 +1,10 @@
-﻿using AppForGym.Classes;
-using AppForGym.ClassHelper;
+﻿using AppForGym.ClassHelper;
 using AppForGym.Database;
 using AppForGym.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AppForGym.Pages
 {
@@ -25,7 +13,7 @@ namespace AppForGym.Pages
     /// </summary>
     public partial class EditOrDeleteClientPage : Page
     {
-        private Client currentClient;
+        private readonly Client currentClient;
         private bool IsEdit;
 
         public EditOrDeleteClientPage()
@@ -61,11 +49,19 @@ namespace AppForGym.Pages
             CmbTariff.IsEnabled = true;
         }
 
-        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        private async void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             DisenableForms();
-            DBClass.SP_UpdateClient(currentClient.IDClient, TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex + 1);
-            //UserDB.Update(currentClient.IDClient, TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex);
+
+            var result = MessageBox.Show("Хотите сбросить счётчик посещений по прошлому абонементу?", "Подтверждение", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                await DBClass.SP_DeleteAllMarkDatesForClient(currentClient.IDClient);
+            }
+
+            await DBClass.SP_UpdateClient(currentClient.IDClient, TbxSurname.Text, TbxName.Text, TbxPatronymic.Text, DateTime.Parse(DtPickerLastPay.Text), CmbTariff.SelectedIndex + 1);
+
             NavigateClass.frmNavigate.GoBack();
         }
 
@@ -81,14 +77,13 @@ namespace AppForGym.Pages
             }
         }
 
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        private async void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             var answer = MessageBox.Show("Вы уверены, что хотите удалить клиента из базы?", "Подтверждение", MessageBoxButton.YesNo);
 
             if (answer == MessageBoxResult.Yes)
             {
-                DBClass.SP_DeleteClient(currentClient.IDClient);
-                //UserDB.Delete(currentClient.IDClient);
+                await DBClass.SP_DeleteClient(currentClient.IDClient);
                 NavigateClass.frmNavigate.GoBack();
             }
 
